@@ -8,6 +8,8 @@ void ALAP_Scheduling(string filepath)
     MyDesign* des = Elaborate(blif);
     Schedule_ALAP(des);
     Print_ALAP_Schedule(des);
+
+    cout << endl << endl << endl;
 }
 
 // ALAPµ÷¶ÈËã·¨

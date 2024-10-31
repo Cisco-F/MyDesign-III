@@ -12,6 +12,8 @@ void Hu_Scheduling(string filepath)
 	MyDesign* des = Elaborate(blif);
 	Generate_Tree(des);
 	Hu_Ordering();
+
+	cout << endl << endl << endl;
 }
 
 void Generate_Tree(MyDesign* des)

@@ -8,6 +8,8 @@ void ASAP_Scheduling(string filepath)
     MyDesign* des = Elaborate(blif);
     Schedule_ASAP(des);
     Print_ASAP_Schedule(des);
+
+    cout << endl << endl << endl;
 }
 
 void Schedule_ASAP(MyDesign* design) {

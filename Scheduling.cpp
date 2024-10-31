@@ -1,8 +1,10 @@
 # include "Scheduling.h"
-# include "Hu.h"
-# include "MR_LCS.h"
 # include "ASAP.h"
 # include "ALAP.h"
+# include "Hu.h"
+# include "ML_RCS.h"
+# include "MR_LCS.h"
+
 
 void menu()
 {
@@ -76,6 +78,7 @@ void Schedule_menu(string filepath)
         cout << "*             1. ASAP Scheduling       *" << endl;
         cout << "*             2. ALAP Scheduling       *" << endl;
         cout << "*             3. Hu Scheduling         *" << endl;
+        cout << "*             4. ML_RCS                *" << endl;
         cout << "*             5. MR_LCS                *" << endl;
         cout << "*             6. exit                  *" << endl;
         cout << "****************************************" << endl;
@@ -100,6 +103,10 @@ void Schedule_menu(string filepath)
         }
         case 3: {
             Hu_Scheduling(filepath);
+            break;
+        }
+        case 4: {
+            ML_RCS_Scheduling(filepath);
             break;
         }
         case 5: {

@@ -317,20 +317,20 @@ void MRLCS(int cycleLimit) {
         totalNot += notUsage[i];
     }
 
-    cout << "在延迟限制为 " << cycleLimit << " 的情况下，最小资源使用如下：" << endl;
-    cout << "AND 门需要的最大数量：" << maxAnd << "，总周期消耗数：" << totalAnd << endl;
-    cout << "OR  门需要的最大数量：" << maxOr << "，总周期消耗数：" << totalOr << endl;
-    cout << "NOT 门需要的最大数量：" << maxNot << "，总周期消耗数：" << totalNot << endl;
+    cout << "With the limit of " << cycleLimit << " ,minimum resource usage is:" << endl;
+    cout << "Max num of AND gates: " << maxAnd << ", total consumption: " << totalAnd << endl;
+    cout << "Max num of OR  gates: " << maxOr << ", total consumption: " << totalOr << endl;
+    cout << "Max num of NOT gates: " << maxNot << ", total consumption: " << totalNot << endl;
 
     if (scheduledCount < operations.size()) {
-        cout << "无法在给定的延迟限制内调度所有操作。" << endl;
+        cout << "Unable to schedule all operations within the given limit!" << endl;
     }
 
     // 输出每个周期的调度结果，按照门的类型分组
-    cout << "\n调度结果：" << endl;
+    cout << "\nMR_LCS ordering: " << endl;
     for (int c = 1; c <= cycleLimit; c++) {
         if (schedulePerCycle.count(c)) {
-            cout << "周期 " << c << " 调度的门：";
+            cout << "Cycle " << c << ":";
 
             // 创建一个类型到门名称列表的映射
             map<string, vector<string>> gatesByType;
@@ -366,7 +366,7 @@ void MR_LCS_Scheduling(string filepath) {
 
     if (numGates > 0) {
         int cycleLimit;
-        cout << "请输入延迟限制（周期数）：";
+        cout << "Please enter delay limits(cycles): ";
         cin >> cycleLimit;
         MRLCS(cycleLimit);
     }
