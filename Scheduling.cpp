@@ -19,18 +19,19 @@ void menu()
         cin >> opt;
         system("cls");
         switch (opt) {
-            case 1: {
-                filepath = select_file();
-                Schedule_menu(filepath);
-                break;
-            }
-            case 2: {
-                cout << "Thanks for using!" << endl;
-                exit(0);
-            }
-            default: {
-                cout << "Invalid input!" << endl;
-            }
+        case 1: {
+            filepath = select_file();
+            cout << filepath << endl;
+            Schedule_menu(filepath);
+            break;
+        }
+        case 2: {
+            cout << "Thanks for using!" << endl;
+            exit(0);
+        }
+        default: {
+            cout << "Invalid input!" << endl;
+        }
         }
     }
 }
@@ -71,7 +72,7 @@ void Schedule_menu(string filepath)
         cout << "****************************************" << endl;
         cout << "              Scheduling Tool           " << endl;
         cout << "****************************************" << endl;
-        //cout << "*             1. run all methods       *" << endl;
+      //cout << "*             1. run all methods       *" << endl;
         cout << "*             1. ASAP Scheduling       *" << endl;
         cout << "*             2. ALAP Scheduling       *" << endl;
         cout << "*             3. Hu Scheduling         *" << endl;
@@ -82,36 +83,36 @@ void Schedule_menu(string filepath)
         cin >> opt;
         system("cls");
         switch (opt) {
-            //case 1: {
-            //  ASAP_Scheduling(filepath);
-            //  ALAP_Scheduling(filepath);
-            //  Hu_Scheduling(filepath);
-            //  MR_LCS_Scheduling(filepath);
-            //  break;
-            //}
-            case 1: {
+                //case 1: {
+                //  ASAP_Scheduling(filepath);
+                //  ALAP_Scheduling(filepath);
+                //  Hu_Scheduling(filepath);
+                //  MR_LCS_Scheduling(filepath);
+                //  break;
+                //}
+        case 1: {
                 ASAP_Scheduling(filepath);
                 break;
             }
-            case 2: {
-                ALAP_Scheduling(filepath);
-                break;
-            }
-            case 3: {
-                Hu_Scheduling(filepath);
-                break;
-            }
-            case 5: {
-                MR_LCS_Scheduling(filepath);
-                break;
-            }
-            case 6: {
-                cout << "Thanks for using!" << endl;
-                exit(0);
-            }
-            default: {
-                cout << "Invalid input!" << endl;
-            }
+        case 2: {
+            ALAP_Scheduling(filepath);
+            break;
+        }
+        case 3: {
+            Hu_Scheduling(filepath);
+            break;
+        }
+        case 5: {
+            MR_LCS_Scheduling(filepath);
+            break;
+        }
+        case 6: {
+            cout << "Thanks for using!" << endl;
+            exit(0);
+        }
+        default: {
+            cout << "Invalid input!" << endl;
+        }
+        }
         }
     }
-}
