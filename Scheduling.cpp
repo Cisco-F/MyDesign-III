@@ -4,7 +4,7 @@
 # include "Hu.h"
 # include "ML_RCS.h"
 # include "MR_LCS.h"
-
+# include "Verilog.h"
 
 void menu()
 {
@@ -16,6 +16,7 @@ void menu()
         cout << "****************************************" << endl;
         cout << "*             1. select file           *" << endl;
         cout << "*             2. exit                  *" << endl;
+        cout << "*             3. Scheduling Verilog    *" << endl;  // 新增选项
         cout << "****************************************" << endl;
 
         cin >> opt;
@@ -30,6 +31,18 @@ void menu()
         case 2: {
             cout << "Thanks for using!" << endl;
             exit(0);
+        }
+        case 3: {
+            string verilog_file = select_file();  // 选择 Verilog 文件
+            if (!verilog_file.empty()) {
+                // 转换 Verilog 文件为 BLIF 文件
+                string blif_filepath = convert_verilog_to_blif(verilog_file);
+                // 调用调度菜单并传递生成的 BLIF 文件路径
+                if (!blif_filepath.empty()) {
+                    Schedule_menu(blif_filepath);
+                }
+            }
+            break;
         }
         default: {
             cout << "Invalid input!" << endl;
@@ -121,5 +134,5 @@ void Schedule_menu(string filepath)
             cout << "Invalid input!" << endl;
         }
         }
-        }
     }
+}

@@ -27,6 +27,7 @@
     <ClCompile Include="MR_LCS.cpp" />
     <ClCompile Include="Hu.cpp" />
     <ClCompile Include="Scheduling.cpp" />
+    <ClCompile Include="Verilog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ALAP.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="My_Netlist.h" />
     <ClInclude Include="Hu.h" />
     <ClInclude Include="Scheduling.h" />
+    <ClInclude Include="Verilog.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
