@@ -12,8 +12,8 @@
 
 using namespace std;
 
-# define IN 0
-# define OUT 1
+# define M_IN 0
+# define M_OUT 1
 
 struct PORT {
 	string port_name;

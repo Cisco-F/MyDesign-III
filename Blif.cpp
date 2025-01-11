@@ -77,7 +77,7 @@ MyDesign* Elaborate(Blif* blif)
 	vector<BlifGate> gates = blif->blifGates;
 	for (BlifGate g : gates) {
 		if (g.gate_port.size() == 2) {	//∑«√≈
-			PORT inport = { g.gate_port[0], IN };
+			PORT inport = { g.gate_port[0], M_IN };
 			CELL cell;
 			cell.operands.push_back(inport);
 			cell.op = '!';
@@ -91,7 +91,7 @@ MyDesign* Elaborate(Blif* blif)
 			else cell.op = '|';
 
 			for (int i = 0; i < g.gate_port.size() - 1; i++) {
-				PORT p = { g.gate_port[i], IN };
+				PORT p = { g.gate_port[i], M_IN };
 				cell.operands.push_back(p);
 			}
 			cells.push_back(cell);

@@ -1,6 +1,8 @@
 # include "Blif.h"
 # include "ALAP.h"
 
+static vector<a_Node*> tree_nodes;
+
 void ALAP_Scheduling(string filepath)
 {
     cout << "ALAP ordering:" << endl;
@@ -14,49 +16,7 @@ void ALAP_Scheduling(string filepath)
 
 // ALAP调度算法
 void Schedule_ALAP(MyDesign* design) {
-    MyScope* scope = design->get_scope();
-    vector<CELL>& cells = scope->cells;
-    unordered_map<string, int> schedule_time; // 存储每个节点的最晚执行时间
-    int max_time = 0;
-
-    // 初始化输出节点的调度时间
-    for (const auto& output_port : scope->output_ports) {
-        schedule_time[output_port] = 0; // 输出节点的时间初始化为 0
-    }
-
-    // 逆拓扑遍历，计算每个节点的最晚执行时间
-    for (auto it = cells.rbegin(); it != cells.rend(); ++it) {
-        CELL* cell = &(*it);
-
-        // 如果是输出节点，已经初始化
-        if (schedule_time.find(cell->cell_name) != schedule_time.end()) {
-            continue;
-        }
-
-        int min_time = INT_MAX; // 找到操作的最小时间
-        for (const auto& operand : cell->operands) {
-            // 检查每个操作数的调度时间
-            if (schedule_time.find(operand.port_name) != schedule_time.end()) {
-                min_time = std::min(min_time, schedule_time[operand.port_name] - 1);
-            }
-        }
-
-        // 如果存在有效的最小时间，更新当前节点的调度时间
-        if (min_time != INT_MAX) {
-            schedule_time[cell->cell_name] = min_time;
-        }
-        else {
-            // 如果没有依赖关系，默认赋予最大时间
-            schedule_time[cell->cell_name] = max_time + 1;
-        }
-    }
-
-    // 将计算的调度时间存储到设计的 cell 数据结构中
-    for (auto& cell : cells) {
-        if (schedule_time.find(cell.cell_name) != schedule_time.end()) {
-            cell.scheduled_time = schedule_time[cell.cell_name];
-        }
-    }
+    
 }
 
 
@@ -140,5 +100,83 @@ void Print_ALAP_Schedule(MyDesign* design) {
             }
         }
         cout << "}" << endl;
+    }
+}
+
+void Generate_Tree_a(MyDesign* des)
+{
+    MyScope* scope = des->get_scope();
+    vector<CELL> cells = scope->cells;
+
+    // generate tree root
+    a_Node* root = new a_Node();
+    if (!root) {
+        cerr << "No space!" << endl;
+        exit(0);
+    }
+    root->node_name = "root";
+
+    for (string s : scope->output_ports) { // add children for root
+        a_Node* child = new a_Node();
+        if (!child) {
+            cerr << "No space!" << endl;
+            exit(0);
+        }
+        child->node_name = s;
+        child->depth = 0;
+        for (CELL cell : cells) {
+            if (cell.cell_name == s) {
+                child->op = cell.op;
+                break;
+            }
+        }
+
+        // add root's children
+        Generate_Subtree_a(cells, child, 1);
+        tree_nodes.push_back(child);
+        root->children.push_back(child);
+    }
+}
+
+void Generate_Subtree_a(vector<CELL> cells, a_Node* root, int depth)
+{
+    string cell_output_name = root->node_name;
+
+    vector<PORT> children;
+    // search the output name in cells from the module
+    for (CELL cell : cells) {
+        if (cell.cell_name == cell_output_name) {
+            children = cell.operands;
+            break;
+        }
+    }
+
+    for (PORT p : children) {
+        // check if the node already exists
+        a_Node* child = new a_Node();
+        bool is_found = false;
+        for (a_Node* node : tree_nodes) {
+            if (node->node_name == p.port_name) {
+                child = node;
+                child->depth = depth > child->depth ? depth : child->depth;
+                is_found = true;
+                break;
+            }
+        }
+
+        if (!is_found) {
+            child->node_name = p.port_name;
+            child->depth = depth;
+            for (CELL cell : cells) {
+                if (cell.cell_name == child->node_name) {
+                    child->op = cell.op;
+                    break;
+                }
+            }
+            Generate_Subtree_a(cells, child, depth + 1);
+            tree_nodes.push_back(child);
+        }
+
+        root->children.push_back(child);
     }
 }
