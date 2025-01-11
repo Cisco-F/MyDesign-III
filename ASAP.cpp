@@ -115,11 +115,11 @@ void Print_ASAP_Schedule(MyDesign* design) {
 
     // 输出每一轮的调度信息
     for (int i = 0; i <= max_cycle; ++i) {
-        cout << "Cycle " << i << ":{";
+        cout << "Cycle " << i << ": { ";
 
         // 输出与门信息
         if (and_gates[i].empty()) {
-            cout << " ";
+            cout << "";
         }
         else {
             for (size_t j = 0; j < and_gates[i].size(); ++j) {
@@ -127,11 +127,11 @@ void Print_ASAP_Schedule(MyDesign* design) {
                 if (j < and_gates[i].size() - 1) cout << " ";
             }
         }
-        cout << "},{";
+        cout << " } , { ";
 
         // 输出或门信息
         if (or_gates[i].empty()) {
-            cout << " ";
+            cout << "";
         }
         else {
             for (size_t j = 0; j < or_gates[i].size(); ++j) {
@@ -139,11 +139,11 @@ void Print_ASAP_Schedule(MyDesign* design) {
                 if (j < or_gates[i].size() - 1) cout << " ";
             }
         }
-        cout << "},{";
+        cout << " } , { ";
 
         // 输出非门信息
         if (not_gates[i].empty()) {
-            cout << " ";
+            cout << "";
         }
         else {
             for (size_t j = 0; j < not_gates[i].size(); ++j) {
@@ -151,6 +151,6 @@ void Print_ASAP_Schedule(MyDesign* design) {
                 if (j < not_gates[i].size() - 1) cout << " ";
             }
         }
-        cout << "}" << endl;
+        cout << " }" << endl;
     }
 }

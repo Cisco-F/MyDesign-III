@@ -69,12 +69,12 @@ void Print_ALAP_Schedule(a_Node* root) {
 		for (string s : output[0]) {
 			result += s + " ";
 		}
-		result += "} { ";
+		result += "} , { ";
 
 		for (string s : output[1]) {
 			result += s + " ";
 		}
-		result += "} { ";
+		result += "} , { ";
 
 		for (string s : output[2]) {
 			result += s + " ";

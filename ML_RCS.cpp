@@ -234,19 +234,19 @@ void runMLRCS(vector<M_Gate>& gates, const vector<string>& inputs, const vector<
         // 记录当前周期的调度结果
         if (!scheduledAND.empty() || !scheduledOR.empty() || !scheduledNOT.empty()) {
             stringstream ss;  // 使用 stringstream 来构建周期字符串
-            ss << "cycle " << cycle << ": {";
+            ss << "cycle " << cycle << ": { ";
             for (size_t i = 0; i < scheduledAND.size(); i++) {
-                if (i > 0) ss << ", ";
+                if (i > 0) ss << " ";
                 ss << scheduledAND[i];
             }
-            ss << "},{";
+            ss << " } , {";
             for (size_t i = 0; i < scheduledOR.size(); i++) {
-                if (i > 0) ss << ", ";
+                if (i > 0) ss << " ";
                 ss << scheduledOR[i];
             }
-            ss << "},{";
+            ss << " } , {";
             for (size_t i = 0; i < scheduledNOT.size(); i++) {
-                if (i > 0) ss << ", ";
+                if (i > 0) ss << " ";
                 ss << scheduledNOT[i];
             }
             ss << "}";

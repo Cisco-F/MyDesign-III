@@ -324,13 +324,14 @@ void MRLCS(int cycleLimit) {
 
     if (scheduledCount < operations.size()) {
         cout << "Unable to schedule all operations within the given limit!" << endl;
+        return;
     }
 
     // 输出每个周期的调度结果，按照门的类型分组
     cout << "\nMR_LCS ordering: " << endl;
     for (int c = 1; c <= cycleLimit; c++) {
         if (schedulePerCycle.count(c)) {
-            cout << "Cycle " << c << ":";
+            cout << "Cycle " << c << ": ";
 
             // 创建一个类型到门名称列表的映射
             map<string, vector<string>> gatesByType;
@@ -348,11 +349,11 @@ void MRLCS(int cycleLimit) {
 
             // 按照类型输出
             for (const auto& typePair : gatesByType) {
-                cout << "{" << typePair.first << ": ";
+                cout << "{ ";
                 for (const auto& name : typePair.second) {
                     cout << name << " ";
                 }
-                cout << "} ";
+                cout << " } , ";
             }
             cout << endl;
         }

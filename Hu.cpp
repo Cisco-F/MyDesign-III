@@ -121,11 +121,11 @@ void Hu_Ordering()
 		for (Node* node : _and) {
 			and_output += node->node_name + " ";
 		}
-		and_output += "}";
+		and_output += "} ,";
 		for (Node* node : _or) {
 			or_output += node->node_name + " ";
 		}
-		or_output += "}";
+		or_output += "} ,";
 		for (Node* node : _not) {
 			not_output += node->node_name + " ";
 		}
