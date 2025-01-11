@@ -9,6 +9,7 @@
 # include <malloc.h>
 # include <iostream>
 #include <unordered_map>
+# include <unordered_set>
 
 # include "My_Netlist.h"
 
@@ -23,7 +24,7 @@ typedef struct _Node_a {
 
 void ALAP_Scheduling(string filepath);
 void Schedule_ALAP(MyDesign* design);
-void Print_ALAP_Schedule(MyDesign* design);
+void Print_ALAP_Schedule(a_Node* root);
 
 // generate a tree from MyDesign
 void Generate_Tree_a(MyDesign* des);

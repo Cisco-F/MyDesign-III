@@ -2,14 +2,14 @@
 # include "ALAP.h"
 
 static vector<a_Node*> tree_nodes;
+static vector<string> input_ports;
 
 void ALAP_Scheduling(string filepath)
 {
     cout << "ALAP ordering:" << endl;
     Blif* blif = Blif_Reader(filepath);
     MyDesign* des = Elaborate(blif);
-    Schedule_ALAP(des);
-    Print_ALAP_Schedule(des);
+	Generate_Tree_a(des);
 
     cout << endl << endl << endl;
 }
@@ -21,92 +21,76 @@ void Schedule_ALAP(MyDesign* design) {
 
 
 // 辅助函数：按照格式输出调度结果
-void Print_ALAP_Schedule(MyDesign* design) {
-    MyScope* scope = design->get_scope();
-    vector<CELL>& cells = scope->cells;
+void Print_ALAP_Schedule(a_Node* root) {
+	unordered_set<string> visited;
+	visited.insert(root->node_name);
+	queue<a_Node*> q;
+	q.push(root);
+	int cycle = 1;
+	while (!q.empty()) {
+		
 
-    // 输出输入和输出端口信息
-    cout << "Input :";
-    for (size_t i = 0; i < scope->input_ports.size(); ++i) {
-        cout << scope->input_ports[i];
-        if (i < scope->input_ports.size() - 1) cout << ", ";
-    }
-    cout << " Output :";
-    for (size_t i = 0; i < scope->output_ports.size(); ++i) {
-        cout << scope->output_ports[i];
-        if (i < scope->output_ports.size() - 1) cout << ", ";
-    }
-    cout << endl;
+		vector<vector<string>> output(3, vector<string>());
+        int n = q.size();
+        // single layer
+        for (int i = 0; i < n; i++) {
+            a_Node* item = q.front();
+            q.pop();
 
-    // 按轮次组织每个门的调度信息
-    map<int, vector<string>> and_gates, or_gates, not_gates;
-    int max_cycle = 0;
+            for (a_Node* child : item->children) {
+                // record each cell's type
+				if (find(input_ports.begin(), input_ports.end(), child->node_name) != input_ports.end()) {
+					continue;
+				}
+				if (visited.find(child->node_name) != visited.end()) {
+					continue;
+				}
 
-    // 遍历所有单元格，按调度时间分类
-    for (const auto& cell : cells) {
-        int cycle = cell.scheduled_time;
-        max_cycle = max(max_cycle, cycle);
+                if (child->op == '&') {
+                    output[0].push_back(child->node_name);
+                }
+                else if (child->op == '|') {
+                    output[1].push_back(child->node_name);
+                }
+                else {
+                    output[2].push_back(child->node_name);
+                }
 
-        if (cell.op == '&') {
-            and_gates[cycle].push_back(cell.cell_name);
-        }
-        else if (cell.op == '|') {
-            or_gates[cycle].push_back(cell.cell_name);
-        }
-        else if (cell.op == '!') {
-            not_gates[cycle].push_back(cell.cell_name);
-        }
-    }
+                q.push(child);
+                visited.insert(child->node_name);
 
-    // 输出调度的轮次总数
-    cout << "Total " << (max_cycle + 1) << " Cycles" << endl;
-
-    // 输出每一轮的调度信息
-    for (int i = 0; i <= max_cycle; ++i) {
-        cout << "Cycle " << i << ":{";
-
-        // 输出与门信息
-        if (and_gates[i].empty()) {
-            cout << " ";
-        }
-        else {
-            for (size_t j = 0; j < and_gates[i].size(); ++j) {
-                cout << and_gates[i][j];
-                if (j < and_gates[i].size() - 1) cout << " ";
             }
         }
-        cout << "},{";
+		// output the result
+		if (output[0].size() == 0 && output[1].size() == 0 && output[2].size() == 0) {
+			break;
+		}
+		string result = "Cycle " + to_string(cycle) + ": { ";
+		for (string s : output[0]) {
+			result += s + " ";
+		}
+		result += "} { ";
 
-        // 输出或门信息
-        if (or_gates[i].empty()) {
-            cout << " ";
-        }
-        else {
-            for (size_t j = 0; j < or_gates[i].size(); ++j) {
-                cout << or_gates[i][j];
-                if (j < or_gates[i].size() - 1) cout << " ";
-            }
-        }
-        cout << "},{";
+		for (string s : output[1]) {
+			result += s + " ";
+		}
+		result += "} { ";
 
-        // 输出非门信息
-        if (not_gates[i].empty()) {
-            cout << " ";
-        }
-        else {
-            for (size_t j = 0; j < not_gates[i].size(); ++j) {
-                cout << not_gates[i][j];
-                if (j < not_gates[i].size() - 1) cout << " ";
-            }
-        }
-        cout << "}" << endl;
-    }
+		for (string s : output[2]) {
+			result += s + " ";
+		}
+		result += "}";
+		cout << result << endl;
+        cycle++;
+	}
+    
 }
 
 void Generate_Tree_a(MyDesign* des)
 {
     MyScope* scope = des->get_scope();
     vector<CELL> cells = scope->cells;
+	input_ports = scope->input_ports;
 
     // generate tree root
     a_Node* root = new a_Node();
@@ -136,6 +120,8 @@ void Generate_Tree_a(MyDesign* des)
         tree_nodes.push_back(child);
         root->children.push_back(child);
     }
+
+	Print_ALAP_Schedule(root);
 }
 
 void Generate_Subtree_a(vector<CELL> cells, a_Node* root, int depth)
