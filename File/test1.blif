@@ -1,6 +1,6 @@
 .model sample
 .inputs a b c d e f
-.outputs o p q
+.outputs z
 .names a d g
 1- 1
 -1 1
@@ -28,4 +28,6 @@
 0 1
 .names n q
 0 1
+.names o p q z
+111 1
 .end

@@ -7,11 +7,11 @@
 
 using namespace std;
 
-//Ö÷½çÃæ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void menu();
-//Ñ¡ÔñÎÄ¼þ´°¿Ú
+//Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 string select_file();
-//µ÷¶È´°¿Ú
+//ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½
 void Schedule_menu(string filepath);
 
 

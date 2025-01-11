@@ -1,4 +1,4 @@
-# pragma once
+
 # ifndef _HU_H_
 # define _HU_H_
 
@@ -10,6 +10,8 @@
 # include <iostream>
 
 # include "My_Netlist.h"
+
+using namespace std;
 
 typedef struct _Node {
 	string node_name;
